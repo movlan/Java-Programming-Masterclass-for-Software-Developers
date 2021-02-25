@@ -1,5 +1,3 @@
 package com.company;
 
-wwww
 
-}
