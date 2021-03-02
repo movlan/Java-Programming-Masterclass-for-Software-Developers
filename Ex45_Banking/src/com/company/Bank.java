@@ -27,8 +27,6 @@ public class Bank {
         if (foundBranch != null) {
             boolean customerCreated = foundBranch.newCustomer(customerName, initialTransaction);
             if (customerCreated) {
-//                System.out.println("Customer " + customerName + ", initial amount " + initialTransaction +
-//                        " was created at branch " + branchName);
                 return true;
             }
             return false;
@@ -42,8 +40,6 @@ public class Bank {
         if (foundBranch != null) {
             boolean transactionProcessed = foundBranch.addCustomerTransaction(customerName, transaction);
             if (transactionProcessed) {
-//                System.out.println("Transaction posted for customer " + customerName + ", amount posted " + transaction +
-//                        ", at branch " + branchName);
                 return true;
             }
             return false;
@@ -56,8 +52,9 @@ public class Bank {
         Branch foundBranch = findBranch(branchName);
         if (foundBranch != null) {
             System.out.println("Customer details for branch " + foundBranch.getName());
-            for (int i = 0; i < foundBranch.getCustomers().size(); i++) {
-                Customer customer = foundBranch.getCustomers().get(i);
+            ArrayList<Customer> branchCustomers = foundBranch.getCustomers();
+            for (int i = 0; i < branchCustomers.size(); i++) {
+                Customer customer = branchCustomers.get(i);
                 System.out.println("Customer: " + customer.getName() + "[" + (i + 1) + "]");
                 if (printTransactions) {
                     ArrayList<Double> transactions = customer.getTransactions();
