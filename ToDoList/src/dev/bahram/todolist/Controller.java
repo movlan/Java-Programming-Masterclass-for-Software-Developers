@@ -35,31 +35,6 @@ public class Controller {
     private BorderPane mainBorderPane;
 
     public void initialize() {
-//        ToDoItem item1 = new ToDoItem("Mail Birthday card",
-//                "Buy 30th birthday card for John",
-//                LocalDate.of(2020, Month.APRIL, 25));
-//        ToDoItem item2 = new ToDoItem("Doctor's appointment",
-//                "See Dr. Smith at 12 Main St. Bring paperwork",
-//                LocalDate.of(2020, Month.MAY, 25));
-//        ToDoItem item3 = new ToDoItem("Third item",
-//                "Long description of do do list item",
-//                LocalDate.of(2020, Month.APRIL, 25));
-//        ToDoItem item4 = new ToDoItem("Fourth Item",
-//                "Long description of do do list item",
-//                LocalDate.of(2020, Month.MARCH, 25));
-//        ToDoItem item5 = new ToDoItem("Fifth Item",
-//                "Long description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list itemLong description of do do list item",
-//                LocalDate.of(2020, Month.APRIL, 20));
-//
-//        toDoItems = new ArrayList<>();
-//        toDoItems.add(item1);
-//        toDoItems.add(item2);
-//        toDoItems.add(item3);
-//        toDoItems.add(item4);
-//        toDoItems.add(item5);
-//
-//        ToDoData.getInstance().setToDoItems(toDoItems);
-
         toDoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ToDoItem>() {
             @Override
             public void changed(ObservableValue<? extends ToDoItem> observableValue, ToDoItem toDoItem, ToDoItem t1) {
@@ -81,8 +56,10 @@ public class Controller {
     public void showNewItemDialog() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Add New ToDo Item");
+        dialog.setHeaderText("Use this dialog to create a new ToDo item");
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("toDoItemsDialog.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("toDoItemDialog.fxml"));
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
         } catch (IOException e) {
@@ -97,7 +74,9 @@ public class Controller {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             DialogController controller = fxmlLoader.getController();
-            controller.processResult();
+            ToDoItem newItem = controller.processResult();
+            toDoListView.getItems().setAll(ToDoData.getInstance().getToDoItems());
+            toDoListView.getSelectionModel().select(newItem);
             System.out.println("OK pressed");
         } else {
             System.out.println("CANCEL pressed");
@@ -109,10 +88,5 @@ public class Controller {
         ToDoItem item = toDoListView.getSelectionModel().getSelectedItem();
         itemDetailsTextArea.setText(item.getDetails());
         deadlineLabel.setText(item.getDeadline().toString());
-//        System.out.println("Selected item is: " + item);
-//        StringBuilder sb = new StringBuilder(item.getDetails());
-//        sb.append("\n\n\n\n Due: ");
-//        sb.append(item.getDeadline().toString());
-//        textArea.setText(sb.toString());
     }
 }
