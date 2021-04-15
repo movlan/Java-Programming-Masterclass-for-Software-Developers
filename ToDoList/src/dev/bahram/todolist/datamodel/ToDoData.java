@@ -28,12 +28,12 @@ public class ToDoData {
         formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
 
-//    public void setToDoItems(List<ToDoItem> toDoItems) {
-//        this.toDoItems = toDoItems;
-//    }
-
     public List<ToDoItem> getToDoItems() {
         return toDoItems;
+    }
+
+    public void addToDoItem(ToDoItem item) {
+        toDoItems.add(item);
     }
 
     public void loadToDoItems() throws IOException {
