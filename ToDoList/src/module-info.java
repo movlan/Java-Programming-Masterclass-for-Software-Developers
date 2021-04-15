@@ -1,5 +1,5 @@
 module ToDoList {
     requires javafx.controls;
     requires javafx.fxml;
-    opens sample;
+    opens dev.bahram.todolist;
 }
