@@ -2,8 +2,10 @@ package dev.bahram.todolist;
 
 import dev.bahram.todolist.datamodel.ToDoData;
 import dev.bahram.todolist.datamodel.ToDoItem;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class Controller {
     @FXML
@@ -40,6 +43,11 @@ public class Controller {
 
     @FXML
     private ToggleButton filterToggleButton;
+
+    private FilteredList<ToDoItem> filteredList;
+
+    private Predicate<ToDoItem> allItems;
+    private Predicate<ToDoItem> todayItems;
 
     public void initialize() {
         listContextMenu = new ContextMenu();
@@ -65,7 +73,23 @@ public class Controller {
             }
         });
 
-        SortedList<ToDoItem> sortedList = new SortedList<ToDoItem>(ToDoData.getInstance().getToDoItems(), new Comparator<ToDoItem>() {
+        allItems = new Predicate<ToDoItem>() {
+            @Override
+            public boolean test(ToDoItem item) {
+                return true;
+            }
+        };
+
+        todayItems = new Predicate<ToDoItem>() {
+            @Override
+            public boolean test(ToDoItem item) {
+                return item.getDeadline().equals(LocalDate.now());
+            }
+        };
+
+        filteredList = new FilteredList<ToDoItem>(ToDoData.getInstance().getToDoItems(), allItems);
+
+        SortedList<ToDoItem> sortedList = new SortedList<ToDoItem>(filteredList, new Comparator<ToDoItem>() {
             @Override
             public int compare(ToDoItem o1, ToDoItem o2) {
                 return o1.getDeadline().compareTo(o2.getDeadline());
@@ -169,10 +193,25 @@ public class Controller {
 
     @FXML
     public void handleFilterToggle() {
+        ToDoItem selectedItem = toDoListView.getSelectionModel().getSelectedItem();
         if (filterToggleButton.isSelected()) {
-
+            filteredList.setPredicate(todayItems);
+            if (filteredList.isEmpty()) {
+                itemDetailsTextArea.clear();
+                deadlineLabel.setText("");
+            } else if (filteredList.contains(selectedItem)) {
+                toDoListView.getSelectionModel().select(selectedItem);
+            } else {
+                toDoListView.getSelectionModel().selectFirst();
+            }
         } else {
-
+            filteredList.setPredicate(allItems);
+            toDoListView.getSelectionModel().select(selectedItem);
         }
+    }
+
+    @FXML
+    public void handleExit() {
+        Platform.exit();
     }
 }
