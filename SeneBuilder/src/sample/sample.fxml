@@ -4,11 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" stylesheets="@styles.css" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <HBox spacing="5.0" GridPane.rowIndex="1">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleAction" text="OK">
+            <Button mnemonicParsing="false" onAction="#handleAction" style="-fx-text-fill: white;" text="OK">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

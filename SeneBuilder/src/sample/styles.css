@@ -1,0 +1,6 @@
+.button {
+  background-color: green;
+  -fx-background-color: purple;
+  font-size: 16px;
+  -fx-font-size: 16px;
+}
