@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+<contact>
+	<first_name>Jeff</first_name>
+	<last_name>Bezos</last_name>
+	<phone_number>555-123-4567</phone_number>
+	<notes>Richer than Bill</notes>
+</contact>
+<contact>
+	<first_name>Jon</first_name>
+	<last_name>Doe</last_name>
+	<phone_number>555-123-4556</phone_number>
+	<notes>Stock Mo Fo</notes>
+</contact>
+<contact>
+	<first_name>Bill</first_name>
+	<last_name>Gates</last_name>
+	<phone_number>555-098-2376</phone_number>
+	<notes>Rich man</notes>
+</contact>
+</contacts>
