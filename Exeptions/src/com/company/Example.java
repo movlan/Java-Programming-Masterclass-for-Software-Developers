@@ -6,24 +6,27 @@ import java.util.Scanner;
 
 public class Example {
     public static void main(String[] args) {
-        float result = divide();
-        System.out.println(result);
+        try {
+            int result = divide();
+            System.out.println(result);
+        } catch (ArithmeticException | NoSuchElementException e) {
+            System.out.println(e.toString());
+            System.out.println("Unable to preform division, autopilot is shutting down");
+        }
     }
 
     public static int divide() {
         int x, y;
-        try {
+//        try {
             x = getInt();
             y = getInt();
-        } catch (ArithmeticException e) {
-            throw new ArithmeticException("No suitable input");
-        }
-        System.out.println("x is " + x + " and y is " + y);
-        try {
+            System.out.println("x is " + x + " and y is " + y);
             return x/y;
-        } catch (ArithmeticException e) {
-            throw new ArithmeticException("attempt divide by zero");
-        }
+//        } catch (NoSuchElementException e) {
+//            throw new NoSuchElementException("No suitable input");
+//        } catch (ArithmeticException e) {
+//            throw new ArithmeticException("attempt divide by zero");
+//        }
     }
 
     private static int getInt() {
