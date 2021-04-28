@@ -1,6 +1,5 @@
 package com.company;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -11,7 +10,6 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        Map<String, String> vocabulary = new HashMap<>();
         int loc = 1;
         while (true) {
             System.out.println(locations.get(loc).getDescription());
