@@ -59,7 +59,7 @@ public class Locations implements Map<Integer, Location> {
                 }
             }
         } catch (IOException e) {
-            System.out.println("IOException " + e.toString());
+            System.out.println("IOException " + e);
         }
 //        try (BufferedReader locFile = new BufferedReader(new FileReader("locations_big.txt"))) {
 //            String line;
