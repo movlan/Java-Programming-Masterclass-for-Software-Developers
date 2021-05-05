@@ -52,7 +52,8 @@ public class Locations implements Map<Integer, Location> {
 
     // 1. This first four bytes will contain the number of  locations (bytes 0-3)
     // 2. The next four bytes will contain the start offset of the locations section (bytes 4-7)
-    // 3. the next section of the file will contain the index (index is 1692 bytes long. it will start at byte 8 and end at byte 1699
+    // 3. the next section of the file will contain the index (index is 1692 bytes long. it will start at byte 8
+    //    and end at byte 1699
     // 4. The final section of the file will contain the location records (the data). It will start ath the byte 1700
 
     static {
@@ -74,25 +75,28 @@ public class Locations implements Map<Integer, Location> {
         } catch (IOException e) {
             System.out.println("IOException in static initializer: " + e.getMessage());
         }
+    }
 
-//        try (ObjectInputStream locFile = new ObjectInputStream(new BufferedInputStream(new FileInputStream("locations.dat")))) {
-//            boolean eof = false;
-//            while (!eof) {
-//                    try {
-//                        Location location = (Location) locFile.readObject();
-//                        System.out.println("Read location " + location.getLocationID() + ": " + location.getDescription());
-//                        System.out.println("Found " + location.getExits().size() + " exits");
-//
-//                        locations.put(location.getLocationID(), location);
-//                    } catch (EOFException e) {
-//                        eof = true;
-//                    }
-//            }
-//        } catch (IOException e) {
-//            System.out.println("IOException " + e.getMessage());
-//        } catch (ClassNotFoundException e) {
-//            System.out.println("ClassNotFoundException " + e.getMessage());
-//        }
+    public Location getLocation(int locationID) throws IOException {
+        IndexRecord record = index.get(locationID);
+        ra.seek(record.getStartByte());
+        int id = ra.readInt();
+        String description = ra.readUTF();
+        String exits = ra.readUTF();
+        String[] exitPart = exits.split(",");
+
+        Location location = new Location(locationID, description, null);
+
+        if (locationID != 0) {
+            for (int i = 0; i < exitPart.length; i++) {
+                System.out.println("exitPart = " + exitPart[i]);
+                System.out.println("exitPart[i + 1] = " + exitPart[i + 1]);
+                String direction = exitPart[i];
+                int destination = Integer.parseInt(exitPart[++i]);
+                location.addExit(direction, destination);
+            }
+        }
+         return location;
     }
 
     @Override
@@ -154,4 +158,10 @@ public class Locations implements Map<Integer, Location> {
     public Set<Entry<Integer, Location>> entrySet() {
         return locations.entrySet();
     }
+
+    public void close() throws IOException {
+        ra.close();
+    }
+
+
 }
